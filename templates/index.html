@@ -1,0 +1,143 @@
+<html>
+
+<head>
+	<style title = preview>
+body {
+background-color: white;
+font-family: verdana, geneva, arial, helvetica, sans-serif;
+font-size: 13px;
+}
+h1 {
+font-size: 30px;
+color: #336699;
+}
+h2 {
+font-size: 20px;
+color: #336699;
+}
+a {
+color: navy;
+}
+a:hover {
+color: red;
+text-decoration: none;
+}
+input,textarea,select {
+background-color: white;
+border-top: 1px solid #888;
+border-bottom: 1px solid #888;
+border-right: 1px solid #888;
+border-left: 1px solid #888;
+}
+td {
+font-size: 13px;
+}
+.gbcap {
+color: #FFFFFF;
+background-color: #6699CC;
+padding: 2px;
+}
+.gbtext {
+color:#000080;
+background-color: #ffffff;
+padding: 5px;
+}
+.gbtext2 {
+color:#000080;
+background-color: #f0f0f0;
+padding: 5px;
+}
+.gbans {
+color:#000080;
+background-color: #A3D4FF;
+padding: 5px;
+}
+.gbcoms {
+font-size: 12px;
+color:#000080;
+background-color: #D5EAFF;
+padding: 5px;
+}
+.gbcap a,.gbcap a:hover {
+color:white;
+}
+.capnum {
+color:#6FEECB;
+font-style:italic;
+}
+.mainform {
+background-color: #D5EAFF;
+}
+.frame {
+background-color: #6699CC;
+}
+.gbowner {
+font-weight:bold;
+color: #880000;
+}
+.gbvis {
+font-weight:bold;
+color:#880000;
+}
+.gbcom {
+color: #000080;
+}
+.comdate {
+font-size: 11px;
+color:#999999;
+}
+.fframe {
+background-color:#6699CC;
+}
+.gbfound {
+color:#880000;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+<h1>Гостевая книга</h1>
+<br><a href='/'>Добавить запись</a>
+<form method="POST">
+	 {% csrf_token %}
+	<table>
+	{{ form }}
+	</table>
+	<input type="submit" value="Update">
+</form>
+
+
+<table border=0 cellpadding=0 cellspacing=1 width=616 bgcolor=#000000 class=frame>
+	{% for user in books %}
+		<tr><td>
+			<table border=0 cellpadding=5 cellspacing=0 width=100%>
+				<tr><td class=gbtext>
+					<font color=#333333 size=-1><b>Имя:</b>{{ user.Username }} <img src='{{ user.Image }}'  border=0 width="50" height="50"> <b>Email:</b> <font>{{ user.Email }}</font></font>  <font color=#333333 size=-1><a href="{{ user.Reference }}">Ссылка</a></font></font>
+					<br><font color=#333333 size=-1><b>Cообщение:</b> <span id=m_a1409398822></span><span id=m_b1409398822>{{ user.Text }} <br> </span></font>
+					<div align=right><i><font color=#333333 size=-2>{{ user.Date }}</font><x/i></div>
+				</td></tr>
+			</table>
+		</td></tr>
+		<hr size=1 width=600><div id=m1401091894><a name=1401091894></a></div>
+
+	{% endfor %}
+</table>
+<br>Всего сообщений: {{ books.count }}. Показано {% for num in books %}{{ forloop.counter }}{% endfor %} сообщений .
+<br>Страницы: &nbsp; &nbsp;[<a href='/'>1</a>] <a href='/'>>></a>
+
+
+
+
+<form action="" method="post">
+    {% csrf_token %}
+    {% for book in books %}
+        <input type="radio" name="option" id="{{ forloop.counter }}" />
+        <label for="{{ forloop.counter }}" >{{ book.Text }}</label><br>
+		<input type="file" name="option" id="{{ forloop.counter }}" />
+    {% endfor %}
+    <input type="submit" value="Send" />
+</form>
+
+</body>
+</html>
