@@ -3,14 +3,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>New Message</title>
-	<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
 </head>
 <body>
-
+<h1>Заполните поля</h1>
 <form  method="POST">
     {% csrf_token %}
-	{{ form }}
+	<table border=1 cellpadding=0 cellspacing=1 width=616>
+	{{ form.as_p }}
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<div class="g-recaptcha" data-sitekey="6LcR1XYUAAAAACh3ObqnJ2IaBRgkClvy3Sjm-s7M"></div>
     <input type="submit" value="Add" />
+	</table>
 </form>
 
 </body>

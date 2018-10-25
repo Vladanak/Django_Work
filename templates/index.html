@@ -10,7 +10,7 @@
 <form method="POST">
 	 {% csrf_token %}
 	<table>
-	{{ form }}
+	{{ form.as_p }}
 	</table>
 	<input type="submit" value="Update">
 </form>

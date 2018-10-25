@@ -1,9 +1,9 @@
-from django.conf.urls import include, url
+from django.conf.urls import  url
 from . import views
 
 app_name = 'app'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'message', views.messages, name='messages')
+    url(r'message', views.message, name='message')
 ]

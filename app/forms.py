@@ -1,5 +1,4 @@
 from django import forms
-from captcha.fields import ReCaptchaField
 
 
 class SelectForm(forms.Form):
@@ -8,9 +7,8 @@ class SelectForm(forms.Form):
 
 
 class AddForm(forms.Form):
-	Username = forms.CharField()
-	Email = forms.EmailField()
-	Reference = forms.URLField()
-	Image = forms.ImageField()
+	Username = forms.CharField(min_length=4,max_length=20,help_text='Введите Имя пользователя',label='Имя пользователя')
+	Email = forms.EmailField(help_text='Введите email',min_length=7)
+	Reference = forms.URLField(help_text='Вставьте ссылку, если хотите',label='Ссылка',required=False)
+	Image = forms.ImageField(allow_empty_file=True, help_text='Выберите картинку',label='Картинка')
 	Text = forms.Textarea()
-	Captcha = ReCaptchaField(public_key='6LcR1XYUAAAAACh3ObqnJ2IaBRgkClvy3Sjm-s7M')
