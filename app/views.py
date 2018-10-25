@@ -3,15 +3,16 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from .models import Book
 from django.views.decorators.csrf import csrf_exempt
-from .forms import UserForm
+from .forms import SelectForm,AddForm
 
 
 def messages(request):
-	return render(request,'Messages.html',{})
+	add_form = AddForm()
+	return render(request,'Messages.html',{'form':add_form})
 
 @csrf_exempt
 def index(request):
-	user_form = UserForm()
+	user_form = SelectForm()
 	if(request.method == 'POST'):
 		value = request.POST
 		if (value['Select'] == 'Username'):

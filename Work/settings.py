@@ -21,7 +21,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ykt%esrgo-!g0dq4_5c_yr0&qej^4=q=8$h2r5k*sp_wj__27v'
-
+RECAPTCHA_PUBLIC_KEY = '6LcR1XYUAAAAACh3ObqnJ2IaBRgkClvy3Sjm-s7M'
+RECAPTCHA_PRIVATE_KEY = '6LcR1XYUAAAAAKgKVOvGrpPUvqka_4kP7ZkjEgj9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -32,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'app.apps.AppConfig',
+    'captcha',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -119,6 +121,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+CAPTCHA_AJAX = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/

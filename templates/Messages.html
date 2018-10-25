@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Title</title>
+	<title>New Message</title>
+	<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
 </head>
 <body>
+
+<form  method="POST">
+    {% csrf_token %}
+	{{ form }}
+    <input type="submit" value="Add" />
+</form>
 
 </body>
 </html>
