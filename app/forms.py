@@ -10,5 +10,5 @@ class AddForm(forms.Form):
 	Username = forms.CharField(min_length=4,max_length=20,label='Имя пользователя')
 	Email = forms.EmailField(min_length=7)
 	Reference = forms.URLField(label='Ссылка',required=False)
-	Image = forms.ImageField(allow_empty_file=True,label='Картинка')
+	Image = forms.ImageField(allow_empty_file=True,label='Картинка',required=False)
 	Text = forms.CharField(max_length=3000,label='Сообщение',widget=forms.Textarea)

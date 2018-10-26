@@ -1,6 +1,6 @@
 import requests
+import datetime
 from django.shortcuts import  render_to_response
-from django.shortcuts import redirect
 from django.shortcuts import render
 from django.contrib import messages
 from .models import Captcha
@@ -11,9 +11,10 @@ from .forms import AddForm
 
 
 def message(request):
-	if request.method == 'POST':
+	user_form = SelectForm()
+	if (request.method == 'POST'):
 		form = AddForm(request.POST)
-		if form.is_valid():
+		if (form.is_valid()):
 			captcha = Captcha.objects.first()
 			recaptcha_response = request.POST.get('g-recaptcha-response')
 			data = {
@@ -22,12 +23,17 @@ def message(request):
 			}
 			r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
 			result = r.json()
-			if result['success']:
-				form.save()
+			if (result['success']):
+				Book.objects.create(Username=request.POST['Username'],Email=request.POST['Email'],
+									Reference=request.POST['Reference'],Image=request.POST['Image'],
+									Text=request.POST['Text'],User_Ip=request.META['REMOTE_ADDR'],
+									Date=datetime.datetime.now(),Browser_Info=request.META['HTTP_USER_AGENT'])
 				messages.success(request, 'New comment added with success!')
 			else:
 				messages.error(request, 'Invalid reCAPTCHA. Please try again.')
-			return redirect('/')
+			return render(request, "index.html",{"form": user_form,
+												 "books": Book.objects.order_by('id').reverse()[0:9],
+												 "count": Book.objects.all()})
 
 	add_form = AddForm()
 	return render(request,'Messages.html',{'form':add_form})
@@ -40,13 +46,13 @@ def index(request):
 		value = request.POST
 		if (value['Select'] == 'Username'):
 			if (value['Select_2'] == 'Asc'):
-				return render_to_response("index.html",{'books':Book.objects.order_by('Username')[0:9],"form": user_form})
+				return render_to_response("index.html",{'books':Book.objects.order_by('Username')[0:9],"form": user_form,"count":Book.objects.all()})
 			else:
-				return render_to_response("index.html", {'books': Book.objects.order_by('Username').reverse()[0:9],"form": user_form})
+				return render_to_response("index.html", {'books': Book.objects.order_by('Username').reverse()[0:9],"form": user_form,"count":Book.objects.all()})
 		else:
 			if (value['Select_2'] == 'Asc'):
-				return render_to_response("index.html", {'books': Book.objects.order_by('Date')[0:9],"form": user_form})
+				return render_to_response("index.html", {'books': Book.objects.order_by('Date')[0:9],"form": user_form,"count":Book.objects.all()})
 			else:
-				return render_to_response("index.html", {'books': Book.objects.order_by('Date').reverse()[0:9],"form": user_form})
+				return render_to_response("index.html", {'books': Book.objects.order_by('Date').reverse()[0:9],"form": user_form,"count":Book.objects.all()})
 	else:
-		return render(request, "index.html", {"form": user_form, "books": Book.objects.order_by('id').reverse()[0:9]})
+		return render(request, "index.html", {"form": user_form, "books": Book.objects.order_by('id').reverse()[0:9],"count":Book.objects.all()})
