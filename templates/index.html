@@ -25,7 +25,7 @@
 
 
 <table border=1 cellpadding=0 cellspacing=1 width=616 bgcolor=#FFFFFF class=frame align="center">
-	{% for user in books %}
+	{% for user in contacts %}
 		<tr><td>
 			<table border=0 cellpadding=5 cellspacing=0 width=100%>
 				<tr><td class=gbtext>
@@ -38,8 +38,25 @@
 	{% endfor %}
 </table>
 <br>
-<p align="center">Всего сообщений: {{ count.count }}. Показано {{ books.count }} сообщений .</p>
-<p align="center">Страницы: &nbsp; &nbsp;[<a href='/'>1</a>] <a href='/'>>></a></p>
+<p align="center">Всего сообщений: {{ count.count }}.</p>
+<div class="pagination" align="center">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">next</a>
+            <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
 
 </body>
 </html>

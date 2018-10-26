@@ -1,20 +1,13 @@
 import os
 from django.core import management
 from django.conf import settings
-from django_cron import CronJobBase, Schedule
 
-class Backup(CronJobBase):
-    RUN_AT_TIMES = ['0:00']
-    schedule = Schedule(run_at_times=RUN_AT_TIMES)
-    code = 'app.Backup'
-
-    def do(self):
-        management.call_command('dbbackup')
+def do():
+    management.call_command('dbbackup')
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -27,16 +20,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
 
 # Application definition
 
-CRON_CLASSES = [
-    "Work.settings.Backup",
-]
-
 INSTALLED_APPS = [
     'dbbackup',
-    'django_cron',
     'app.apps.AppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,6 +49,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Work.urls'
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.template.context_processors.request',
+)
+
 
 TEMPLATES = [
     {
@@ -91,7 +88,6 @@ DATABASES = {
     'PORT': '',
 }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -131,10 +127,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = '/home/vladislav/PycharmProjects/Work/images/media/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static','Other')
 
-MEDIA_URL = '/home/vladislav/PycharmProjects/Work/images/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'images', 'media')
+
+MEDIA_URL = '/images/media/'
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
-DBBACKUP_STORAGE_OPTIONS = {'location': '/home/vladislav/PycharmProjects/Work/var/backups/'}
+DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'var', 'backups')}
+

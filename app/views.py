@@ -1,6 +1,6 @@
 import requests
 import datetime
-from django.shortcuts import  render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.shortcuts import render
 from django.contrib import messages
 from .models import Captcha
@@ -8,10 +8,17 @@ from .models import Book
 from django.views.decorators.csrf import csrf_exempt
 from .forms import SelectForm
 from .forms import AddForm
+from django.core.paginator import Paginator
+
 
 
 def message(request):
 	user_form = SelectForm()
+	obj_list = Book.objects.all()
+	obj_list = obj_list.order_by('id').reverse()
+	paginator = Paginator(obj_list, 10)
+	page = request.GET.get('page')
+	contacts = paginator.get_page(page)
 	if (request.method == 'POST'):
 		form = AddForm(request.POST)
 		if (form.is_valid()):
@@ -31,9 +38,7 @@ def message(request):
 				messages.success(request, 'New comment added with success!')
 			else:
 				messages.error(request, 'Invalid reCAPTCHA. Please try again.')
-			return render(request, "index.html",{"form": user_form,
-												 "books": Book.objects.order_by('id').reverse()[0:9],
-												 "count": Book.objects.all()})
+			return redirect(to='/')
 
 	add_form = AddForm()
 	return render(request,'Messages.html',{'form':add_form})
@@ -41,18 +46,39 @@ def message(request):
 
 @csrf_exempt
 def index(request):
+	obj_list = Book.objects.all()
+	obj_list = obj_list.order_by('id').reverse()
+	paginator = Paginator(obj_list,10)
+	page = request.GET.get('page')
+	contacts = paginator.get_page(page)
 	user_form = SelectForm()
 	if(request.method == 'POST'):
 		value = request.POST
 		if (value['Select'] == 'Username'):
 			if (value['Select_2'] == 'Asc'):
-				return render_to_response("index.html",{'books':Book.objects.order_by('Username')[0:9],"form": user_form,"count":Book.objects.all()})
+				obj_list = obj_list.order_by('Username')
+				paginator = Paginator(obj_list, 10)
+				page = request.GET.get('page')
+				contacts = paginator.get_page(page)
+				return render_to_response("index.html",{"form": user_form,"count":obj_list,'contacts':contacts})
 			else:
-				return render_to_response("index.html", {'books': Book.objects.order_by('Username').reverse()[0:9],"form": user_form,"count":Book.objects.all()})
+				obj_list = obj_list.order_by('Username').reverse()
+				paginator = Paginator(obj_list, 10)
+				page = request.GET.get('page')
+				contacts = paginator.get_page(page)
+				return render_to_response("index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
 		else:
 			if (value['Select_2'] == 'Asc'):
-				return render_to_response("index.html", {'books': Book.objects.order_by('Date')[0:9],"form": user_form,"count":Book.objects.all()})
+				obj_list = obj_list.order_by('Date')
+				paginator = Paginator(obj_list, 10)
+				page = request.GET.get('page')
+				contacts = paginator.get_page(page)
+				return render_to_response("index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
 			else:
-				return render_to_response("index.html", {'books': Book.objects.order_by('Date').reverse()[0:9],"form": user_form,"count":Book.objects.all()})
+				obj_list = obj_list.order_by('Date').reverse()
+				paginator = Paginator(obj_list, 10)
+				page = request.GET.get('page')
+				contacts = paginator.get_page(page)
+				return render_to_response("index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
 	else:
-		return render(request, "index.html", {"form": user_form, "books": Book.objects.order_by('id').reverse()[0:9],"count":Book.objects.all()})
+		return render(request, "index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
