@@ -1,4 +1,16 @@
 import os
+from django.core import management
+from django.conf import settings
+from django_cron import CronJobBase, Schedule
+
+class Backup(CronJobBase):
+    RUN_AT_TIMES = ['0:00']
+    schedule = Schedule(run_at_times=RUN_AT_TIMES)
+    code = 'app.Backup'
+
+    def do(self):
+        management.call_command('dbbackup')
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -18,7 +30,13 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+CRON_CLASSES = [
+    "Work.settings.Backup",
+]
+
 INSTALLED_APPS = [
+    'dbbackup',
+    'django_cron',
     'app.apps.AppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -115,4 +133,8 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '/images/media/')
 
-MEDIA_URL = '/images/media/'
+MEDIA_URL = os.path.join(BASE_DIR, '/images/media/')
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+DBBACKUP_STORAGE_OPTIONS = {'location': '/var/backups'}
