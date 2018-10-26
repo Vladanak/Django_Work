@@ -5,15 +5,16 @@
 	<title>New Message</title>
 </head>
 <body>
-<h1>Заполните поля</h1>
+<a href="/">Вернуться на начальную страницу</a>
+<h1 align="center">Заполните поля</h1>
 <form  method="POST">
     {% csrf_token %}
-	<table border=1 cellpadding=0 cellspacing=1 width=616>
-	{{ form.as_p }}
-	<script src='https://www.google.com/recaptcha/api.js'></script>
-	<div class="g-recaptcha" data-sitekey="6LcR1XYUAAAAACh3ObqnJ2IaBRgkClvy3Sjm-s7M"></div>
-    <input type="submit" value="Add" />
+	<table cellpadding=3 cellspacing=2 align="center">
+	{{ form.as_table }}
 	</table>
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<div align="center" class="g-recaptcha" data-sitekey="6LcR1XYUAAAAACh3ObqnJ2IaBRgkClvy3Sjm-s7M"></div>
+	<div align="center"><input type="submit" value="Add" /></div>
 </form>
 
 </body>
