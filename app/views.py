@@ -1,11 +1,11 @@
 import requests
 import datetime
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.contrib import messages
 from .models import Captcha
 from .models import Book
-from django.views.decorators.csrf import csrf_exempt
 from .forms import SelectForm
 from .forms import AddForm
 from django.core.paginator import Paginator
@@ -13,12 +13,6 @@ from django.core.paginator import Paginator
 
 
 def message(request):
-	user_form = SelectForm()
-	obj_list = Book.objects.all()
-	obj_list = obj_list.order_by('id').reverse()
-	paginator = Paginator(obj_list, 10)
-	page = request.GET.get('page')
-	contacts = paginator.get_page(page)
 	if (request.method == 'POST'):
 		form = AddForm(request.POST)
 		if (form.is_valid()):
@@ -44,7 +38,6 @@ def message(request):
 	return render(request,'Messages.html',{'form':add_form})
 
 
-@csrf_exempt
 def index(request):
 	obj_list = Book.objects.all()
 	obj_list = obj_list.order_by('id').reverse()

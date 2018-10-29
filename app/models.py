@@ -6,7 +6,7 @@ class Book(models.Model):
 	Email = models.EmailField(unique=True,blank=False)
 	Reference = models.URLField(null=True,blank=True)
 	Text = models.TextField(max_length=300,blank=False)
-	Image = models.ImageField(upload_to='images/media/',blank=True,null=True)
+	Image = models.ImageField(upload_to='media/',blank=True,null=True)
 	Date = models.DateTimeField(blank=False)
 	User_Ip = models.GenericIPAddressField(blank=False)
 	Browser_Info = models.TextField(blank=False)

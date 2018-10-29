@@ -129,11 +129,11 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR,'static','Other')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'images', 'media')
+MEDIA_ROOT = '/home/vladislav/PycharmProjects/Work/media/'
 
-MEDIA_URL = '/images/media/'
+MEDIA_URL = '/media/'
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
-DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'var', 'backups')}
+DBBACKUP_STORAGE_O18PTIONS = {'location': os.path.join(BASE_DIR, 'var', 'backups')}
 

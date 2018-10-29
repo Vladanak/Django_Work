@@ -29,7 +29,7 @@
 		<tr><td>
 			<table border=0 cellpadding=5 cellspacing=0 width=100%>
 				<tr><td class=gbtext>
-					<font color=#333333 size=-1><b>Имя:</b>{{ user.Username }} <img src='{{ user.Image }}'  border=0 width="25" height="25"> <br><b>Email:</b> <font>{{ user.Email }}</font></font>  <font color=#333333 size=-1><br><b>Ссылка:</b> <a href="{{ user.Reference }}">{{ user.Reference }}</a></font></font>
+					<font color=#333333 size=-1><b>Имя:</b>{{ user.Username }} {% if user.Image %}<img src='{{ MEDIA_URL }}{{ user.Image.url }}' {% endif %}  border=0 width="50" height="50"> <br><b>Email:</b> <font>{{ user.Email }}</font></font>  <font color=#333333 size=-1><br><b>Ссылка:</b> <a href="{{ user.Reference }}">{{ user.Reference }}</a></font></font>
 					<br><font color=#333333 size=-1><b>Cообщение:</b> <span id=m_a1409398822></span><span id=m_b1409398822>{{ user.Text }} <br> </span></font>
 					<div align=right><i><font color=#333333 size=-2>{{ user.Date }}</font><x/i></div>
 				</td></tr>
