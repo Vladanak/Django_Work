@@ -135,5 +135,6 @@ MEDIA_URL = '/media/'
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
-DBBACKUP_STORAGE_O18PTIONS = {'location': os.path.join(BASE_DIR, 'var', 'backups')}
+DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'var', 'backups')}
 
+print(DBBACKUP_STORAGE_OPTIONS)
