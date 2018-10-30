@@ -13,9 +13,9 @@ from django.core.paginator import Paginator
 
 
 def message(request):
-	if (request.method == 'POST'):
+	if request.method == 'POST':
 		form = AddForm(request.POST)
-		if (form.is_valid()):
+		if form.is_valid():
 			captcha = Captcha.objects.first()
 			recaptcha_response = request.POST.get('g-recaptcha-response')
 			data = {
@@ -24,7 +24,7 @@ def message(request):
 			}
 			r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
 			result = r.json()
-			if (result['success']):
+			if result['success']:
 				Book.objects.create(Username=request.POST['Username'],Email=request.POST['Email'],
 									Reference=request.POST['Reference'],Image=request.POST['Image'],
 									Text=request.POST['Text'],User_Ip=request.META['REMOTE_ADDR'],
@@ -33,7 +33,6 @@ def message(request):
 			else:
 				messages.error(request, 'Invalid reCAPTCHA. Please try again.')
 			return redirect(to='/')
-
 	add_form = AddForm()
 	return render(request,'Messages.html',{'form':add_form})
 
@@ -45,15 +44,15 @@ def index(request):
 	page = request.GET.get('page')
 	contacts = paginator.get_page(page)
 	user_form = SelectForm()
-	if(request.method == 'POST'):
+	if request.method == 'POST':
 		value = request.POST
-		if (value['Select'] == 'Username'):
-			if (value['Select_2'] == 'Asc'):
+		if value['Select'] == 'Username':
+			if value['Select_2'] == 'Asc':
 				obj_list = obj_list.order_by('Username')
 				paginator = Paginator(obj_list, 10)
 				page = request.GET.get('page')
 				contacts = paginator.get_page(page)
-				return render_to_response("index.html",{"form": user_form,"count":obj_list,'contacts':contacts})
+				return render_to_response("index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
 			else:
 				obj_list = obj_list.order_by('Username').reverse()
 				paginator = Paginator(obj_list, 10)
@@ -61,7 +60,7 @@ def index(request):
 				contacts = paginator.get_page(page)
 				return render_to_response("index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
 		else:
-			if (value['Select_2'] == 'Asc'):
+			if value['Select_2'] == 'Asc':
 				obj_list = obj_list.order_by('Date')
 				paginator = Paginator(obj_list, 10)
 				page = request.GET.get('page')
