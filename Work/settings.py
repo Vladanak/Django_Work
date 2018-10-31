@@ -2,11 +2,9 @@ import os
 from django.core import management
 from django.conf import settings
 
-def do():
-    management.call_command('dbbackup')
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -29,6 +27,7 @@ STATICFILES_DIRS = (
 
 INSTALLED_APPS = [
     'dbbackup',
+    'schedule',
     'app.apps.AppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,6 +48,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Work.urls'
+
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.template.context_processors.request',

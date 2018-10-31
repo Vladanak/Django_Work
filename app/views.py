@@ -1,5 +1,6 @@
 import requests
 import datetime
+import schedule
 from django.shortcuts import render_to_response
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -11,8 +12,16 @@ from .forms import AddForm
 from django.core.paginator import Paginator
 
 
+def job():
+	from django.core import management
+	management.call_command('dbbackup')
+
+
+schedule.every().day.at('00:00').do(job)
+
 
 def message(request):
+	schedule.run_pending()
 	if request.method == 'POST':
 		form = AddForm(request.POST)
 		if form.is_valid():
@@ -38,6 +47,7 @@ def message(request):
 
 
 def index(request):
+	schedule.run_pending()
 	obj_list = Book.objects.all()
 	obj_list = obj_list.order_by('id').reverse()
 	paginator = Paginator(obj_list,10)
