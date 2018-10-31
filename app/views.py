@@ -11,6 +11,22 @@ from .forms import AddForm
 from django.core.paginator import Paginator
 
 
+def index_func(request,element,sort):
+	paginator = Paginator(start_list(element,sort), 10)
+	page = request.GET.get('page')
+	contacts = paginator.get_page(page)
+	return contacts
+
+
+def start_list(element,sort):
+	obj_list = Book.objects.all()
+	if sort == 'Desc':
+		obj_list = obj_list.order_by(element).reverse()
+	else:
+		obj_list = obj_list.order_by(element)
+	return obj_list
+
+
 def job():
 	from django.core import management
 	management.call_command('dbbackup')
@@ -41,43 +57,27 @@ def message(request):
 			else:
 				messages.error(request, 'Invalid reCAPTCHA. Please try again.')
 			return redirect(to='/')
-	add_form = AddForm()
-	return render(request,'Messages.html',{'form':add_form})
+	return render(request,'Messages.html',{'form': AddForm()})
 
 
 def index(request):
 	schedule.run_pending()
-	obj_list = Book.objects.all()
-	obj_list = obj_list.order_by('id').reverse()
-	paginator = Paginator(obj_list,10)
-	page = request.GET.get('page')
-	contacts = paginator.get_page(page)
-	user_form = SelectForm()
 	if request.method == 'POST':
 		value = request.POST
 		if value['Select'] == 'Username':
 			if value['Select_2'] == 'Asc':
-				obj_list = obj_list.order_by('Username')
-				paginator = Paginator(obj_list, 10)
-				page = request.GET.get('page')
-				contacts = paginator.get_page(page)
+				contacts = index_func(request,'Username','Asc')
 			else:
-				obj_list = obj_list.order_by('Username').reverse()
-				paginator = Paginator(obj_list, 10)
-				page = request.GET.get('page')
-				contacts = paginator.get_page(page)
-			return render(request, "index.html", {"form": user_form, "count": obj_list, 'contacts': contacts})
+				contacts = index_func(request,'Username','Desc')
+			return render(request, "index.html", {"form": SelectForm(), "count": start_list('id','Desc'),
+												  'contacts': contacts})
 		else:
 			if value['Select_2'] == 'Asc':
-				obj_list = obj_list.order_by('Date')
-				paginator = Paginator(obj_list, 10)
-				page = request.GET.get('page')
-				contacts = paginator.get_page(page)
+				contacts = index_func(request,'Date','Asc')
 			else:
-				obj_list = obj_list.order_by('Date').reverse()
-				paginator = Paginator(obj_list, 10)
-				page = request.GET.get('page')
-				contacts = paginator.get_page(page)
-			return render(request, "index.html", {"form": user_form, "count": obj_list, 'contacts': contacts})
+				contacts = index_func(request,'Date','Desc')
+			return render(request, "index.html", {"form": SelectForm(), "count": start_list('id','Desc'),
+												  'contacts': contacts})
 	else:
-		return render(request, "index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
+		return render(request, "index.html", {"form": SelectForm(),"count": start_list('id','Desc'),
+											  'contacts': index_func(request,'id','Desc')})
