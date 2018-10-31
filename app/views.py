@@ -62,25 +62,25 @@ def index(request):
 				paginator = Paginator(obj_list, 10)
 				page = request.GET.get('page')
 				contacts = paginator.get_page(page)
-				return render_to_response("index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
+				return render(request,"index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
 			else:
 				obj_list = obj_list.order_by('Username').reverse()
 				paginator = Paginator(obj_list, 10)
 				page = request.GET.get('page')
 				contacts = paginator.get_page(page)
-				return render_to_response("index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
+				return render(request,"index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
 		else:
 			if value['Select_2'] == 'Asc':
 				obj_list = obj_list.order_by('Date')
 				paginator = Paginator(obj_list, 10)
 				page = request.GET.get('page')
 				contacts = paginator.get_page(page)
-				return render_to_response("index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
+				return render(request,"index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
 			else:
 				obj_list = obj_list.order_by('Date').reverse()
 				paginator = Paginator(obj_list, 10)
 				page = request.GET.get('page')
 				contacts = paginator.get_page(page)
-				return render_to_response("index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
+				return render(request,"index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
 	else:
 		return render(request, "index.html", {"form": user_form,"count":obj_list,'contacts':contacts})
